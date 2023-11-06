@@ -936,7 +936,7 @@ public function generate_token_post(){
 
   
     if ($user_type_id == '' )  {
-        $this->response(array('status_code' => '1' , 'message' =>'Provide Request Parameters ( user_type_id )'));
+        $this->response(array('status_code' => '1' , 'message' =>'Provide Request Parameters User Type Id '));
     }
 
     $utility = new Utility();
