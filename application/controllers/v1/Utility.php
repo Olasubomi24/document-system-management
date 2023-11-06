@@ -89,14 +89,14 @@ class Utility extends CI_Controller
         return $response;
     }
 
-    // function is_emailanduser_type_exist($email,$user_type_id){
-    //     $response = array("status_code" => "0" , "message" => "Email not found");
-    //     $query = $this->db->query("select email , user_type_id from user_accounts where email = '$email' AND user_type_id = '$user_type_id'")->result_array();
-    //     if ( sizeof($query ) > 0){
-    //         $response = array("status_code" => "1" , "message" => "Email already exist");  
-    //     }
-    //     return $response;
-    // }
+    function is_emailanduser_type_exist($email,$user_type_id){
+        $response = array("status_code" => "0" , "message" => "Email not found");
+        $query = $this->db->query("select email , user_type_id from user_accounts where email = '$email' AND user_type_id = '$user_type_id'")->result_array();
+        if ( sizeof($query ) > 0){
+            $response = array("status_code" => "1" , "message" => "Email already exist");  
+        }
+        return $response;
+    }
     function is_image_exist($image){
         $response = array("status_code" => "0" , "message" => "File not found");
         $query = $this->db->query("select image from document_logs where image = '$image'")->result_array();

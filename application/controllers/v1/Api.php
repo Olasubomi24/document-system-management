@@ -940,10 +940,10 @@ public function generate_token_post(){
     }
 
     $utility = new Utility();
-//     $check_email = $utility->is_emailanduser_type_exist($email,$user_type_id);
-//     if( $check_email['status_code'] != '1'){
-//        $this->response(array('status_code'=>$check_email['status_code'] ,  'message'=>$check_email['message']));
-//    }
+    $check_email = $utility->is_emailanduser_type_exist($email,$user_type_id);
+    if( $check_email['status_code'] != '1'){
+       $this->response(array('status_code'=>$check_email['status_code'] ,  'message'=>$check_email['message']));
+   }
     try { 
         $response = $utility->generate_token($email,$user_type_id);
        
