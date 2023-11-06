@@ -128,6 +128,16 @@ class Utility extends CI_Controller
         return $response;
     }
 
+    function is_password_exist($email,$old_password,$user_type_id){
+        $response = array("status_code" => "0" , "message" => "pass  not found");
+        $query = $this->db->query("select password from user_accounts where email = '$email' and password = '$old_password' and user_type_id = '$user_type_id'")->result_array();
+        if ( sizeof($query ) > 0){
+            $response = array("status_code" => "1" , "message" => "pass already exist");  
+        }
+        return $response;
+    }
+
+
     
 
 
@@ -187,10 +197,15 @@ class Utility extends CI_Controller
         return $response;
     }
     public function user_view_lists($document_name){
-        $sqlQuery = 'SELECT * from user_views';
+        $sqlQuery = "SELECT a.id,a.email, a.ref_id,CONCAT(b.firstname, ' ', b.lastname) AS full_name , document_name, url, action_perform, a.inserted_dt FROM user_views a, user_accounts b
+        WHERE a.ref_id = b.ref_id";
         
         if ($document_name != "") {
-            $sqlQuery .= " WHERE document_name = '$document_name'";
+            
+            $sqlQuery .= " AND document_name = '$document_name'";
+            
+        }else{
+            $sqlQuery =  $sqlQuery;
         }
         
         $result = $this->db->query($sqlQuery)->result();
@@ -456,6 +471,22 @@ class Utility extends CI_Controller
          } else {
              $this->db->trans_commit();
               $response =  array('status_code' => '0' ,'message' => 'Unit Creation Successful');
+         }
+         return $response;
+    }
+    public function get_pass($email,$user_type_id,$new_password){
+         $response = array();
+         $query1 = "UPDATE user_accounts SET password='$new_password'WHERE email = '$email' AND user_type_id = '$user_type_id'";
+ 
+         $this->db->query($query1);
+         $this->db->trans_commit();
+ 
+         if ($this->db->trans_status() === FALSE){
+             $this->db->trans_rollback();
+             $response =   array('status_code' => '1','message' => "it was not updated Uunsuccessful");
+         } else {
+             $this->db->trans_commit();
+              $response =  array('status_code' => '0' ,'message' => 'It was update successful');
          }
          return $response;
     }

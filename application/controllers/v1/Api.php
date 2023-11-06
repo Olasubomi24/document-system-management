@@ -499,6 +499,55 @@ class Api extends REST_Controller {
           }
     }
 
+    public function update_pass_post(){
+        $email = $this->input->post('email');
+        $user_type_id = $this->input->post('user_type_id'); 
+        $old_password = md5($this->input->post('old_password')); 
+        $new_password = $this->input->post('new_password');
+
+        if ($email !== null) {
+            $email = ucfirst(trim($email));
+        }
+        if ($user_type_id !== null) {
+            $user_type_id = trim($user_type_id);
+        }
+        if ($old_password !== null) {
+            $old_password= trim($old_password);
+        }
+        if ($new_password !== null) {
+            $new_password = md5(trim($new_password));
+        }
+        if (empty($email)) {
+            $this->response(array('status_code' => '1', 'message' => 'Email  cannot be empty'));
+        }
+        
+        if (empty($user_type_id)) {
+            $this->response(array('status_code' => '1', 'message' => 'User Type Id cannot be empty'));
+        }
+        
+        if (empty($old_password)) {
+            $this->response(array('status_code' => '1', 'message' => 'Old Password  cannot be empty'));
+        }
+        if (empty($new_password)) {
+            $this->response(array('status_code' => '1', 'message' => 'New Password  cannot be empty'));
+        }
+        $utility = new Utility();
+ 
+        $check_password = $utility->is_password_exist($email,$old_password,$user_type_id);
+        if( $check_password['status_code'] != '1'){
+           $this->response(array('status_code'=>$check_password['status_code'] , 'message'=>$check_password['message']));
+         }
+         try {
+
+            return  $this->response($utility->get_pass($email,$user_type_id,$new_password));
+   
+          } catch (Exception $e) {
+            //echo $e->getMessage();
+            // die();
+          $this->response(array('status_code' => '1' ,'message' =>'Registration error '.$e->getMessage()));
+      } 
+    }
+
 
     public function create_unit_post() {
         $department_id = $this->input->post('department_id');
