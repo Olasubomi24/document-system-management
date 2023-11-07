@@ -476,7 +476,7 @@ class Utility extends CI_Controller
     }
     public function get_pass($email,$user_type_id,$new_password){
          $response = array();
-         $query1 = "UPDATE user_accounts SET password='$new_password'WHERE email = '$email' AND user_type_id = '$user_type_id'";
+         $query1 = "UPDATE user_accounts SET password='$new_password' WHERE email = '$email' AND user_type_id = '$user_type_id'";
  
          $this->db->query($query1);
          $this->db->trans_commit();
